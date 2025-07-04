@@ -10,6 +10,15 @@ import (
     "computer-store/services"
 )
 
+// @Summary Lấy đánh giá theo sản phẩm
+// @Description Trả về danh sách đánh giá của một sản phẩm cụ thể (bao gồm thông tin người dùng)
+// @Tags Reviews
+// @Produce json
+// @Param product_id path int true "ID sản phẩm"
+// @Success 200 {array} models.Review
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /reviews/product/{product_id} [get]
 func GetReviewsByProductID(c *gin.Context) {
     idParam := c.Param("product_id")
     productID, err := strconv.Atoi(idParam)
@@ -28,7 +37,17 @@ func GetReviewsByProductID(c *gin.Context) {
     c.JSON(http.StatusOK, reviews)
 }
 
-// POST /reviews
+// @Summary Tạo đánh giá mới
+// @Description Người dùng tạo đánh giá cho một sản phẩm
+// @Tags Reviews
+// @Accept json
+// @Produce json
+// @Param input body models.Review true "Thông tin đánh giá"
+// @Success 201 {object} models.Review
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /reviews [post]
+// @Security BearerAuth
 func CreateReview(c *gin.Context) {
     var input models.Review
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -48,7 +67,18 @@ func CreateReview(c *gin.Context) {
     c.JSON(http.StatusCreated, input)
 }
 
-// PUT /reviews/:id
+// @Summary Cập nhật đánh giá
+// @Description Cập nhật nội dung hoặc điểm đánh giá theo ID
+// @Tags Reviews
+// @Accept json
+// @Produce json
+// @Param id path int true "ID đánh giá"
+// @Param input body models.Review true "Thông tin đánh giá cập nhật"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /reviews/{id} [put]
+// @Security BearerAuth
 func UpdateReview(c *gin.Context) {
     id, _ := strconv.Atoi(c.Param("id"))
     var input models.Review
@@ -65,7 +95,15 @@ func UpdateReview(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"message": "Đã cập nhật thành công"})
 }
 
-// DELETE /reviews/:id
+// @Summary Xoá đánh giá
+// @Description Xoá một đánh giá theo ID
+// @Tags Reviews
+// @Produce json
+// @Param id path int true "ID đánh giá"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /reviews/{id} [delete]
+// @Security BearerAuth
 func DeleteReview(c *gin.Context) {
     id, _ := strconv.Atoi(c.Param("id"))
     if err := services.DeleteReview(uint(id)); err != nil {

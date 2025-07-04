@@ -4,6 +4,9 @@ import (
     "time"
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
+    "github.com/swaggo/files"              // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "computer-store/docs" 
 )
 
 func SetupRouter() *gin.Engine {
@@ -19,6 +22,9 @@ func SetupRouter() *gin.Engine {
     }))
 
 	r.Static("/uploads", "./uploads")
+
+    // Swagger docs
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
     SetupAuthRoutes(r)
     SetupProductRoutes(r)

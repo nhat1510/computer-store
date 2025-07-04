@@ -1,0 +1,18 @@
+# Bỏ file thực thi & temp
+*.exe
+*.log
+*.out
+
+# Môi trường
+.env
+
+# Ảnh tạm, upload
+uploads/
+tmp/
+
+# VS Code
+.vscode/
+
+# MacOS, Windows
+.DS_Store
+Thumbs.db

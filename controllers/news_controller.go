@@ -9,6 +9,13 @@ import (
 	"computer-store/services"
 )
 
+// @Summary Lấy danh sách tất cả tin tức
+// @Description Trả về danh sách toàn bộ tin tức
+// @Tags News
+// @Produce json
+// @Success 200 {array} models.News
+// @Failure 500 {object} map[string]string
+// @Router /news [get]
 func GetNews(c *gin.Context) {
 	news, err := services.GetAllNews()
 	if err != nil {
@@ -18,6 +25,14 @@ func GetNews(c *gin.Context) {
 	c.JSON(http.StatusOK, news)
 }
 
+// @Summary Lấy chi tiết tin tức theo ID
+// @Description Trả về chi tiết tin tức theo ID
+// @Tags News
+// @Produce json
+// @Param id path int true "ID tin tức"
+// @Success 200 {object} models.News
+// @Failure 404 {object} map[string]string
+// @Router /news/{id} [get]
 func GetNewsByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, _ := strconv.Atoi(idStr)
@@ -29,6 +44,20 @@ func GetNewsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, news)
 }
 
+// @Summary Tạo tin tức mới
+// @Description Tạo một tin tức mới từ form-data (bao gồm ảnh, tiêu đề, nội dung...)
+// @Tags News
+// @Accept multipart/form-data
+// @Produce json
+// @Param title formData string true "Tiêu đề"
+// @Param content formData string true "Nội dung"
+// @Param highlight formData string false "Nội dung nổi bật"
+// @Param tags formData string false "Tags (ngăn cách bằng dấu phẩy)"
+// @Param image formData file false "Ảnh đại diện"
+// @Success 201 {object} models.News
+// @Failure 500 {object} map[string]string
+// @Router /news [post]
+// @Security BearerAuth
 func CreateNews(c *gin.Context) {
 	var news models.News
 
@@ -57,6 +86,23 @@ func CreateNews(c *gin.Context) {
 	c.JSON(http.StatusCreated, created)
 }
 
+
+// @Summary Cập nhật tin tức
+// @Description Cập nhật tin tức theo ID (form-data)
+// @Tags News
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path int true "ID tin tức"
+// @Param title formData string false "Tiêu đề"
+// @Param content formData string false "Nội dung"
+// @Param highlight formData string false "Nội dung nổi bật"
+// @Param tags formData string false "Tags"
+// @Param image formData file false "Ảnh mới"
+// @Success 200 {object} models.News
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /news/{id} [put]
+// @Security BearerAuth
 func UpdateNews(c *gin.Context) {
 	idStr := c.Param("id")
 	id, _ := strconv.Atoi(idStr)
@@ -92,6 +138,15 @@ func UpdateNews(c *gin.Context) {
 	c.JSON(http.StatusOK, updated)
 }
 
+// @Summary Xóa tin tức
+// @Description Xóa tin tức theo ID
+// @Tags News
+// @Produce json
+// @Param id path int true "ID tin tức"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /news/{id} [delete]
+// @Security BearerAuth
 func DeleteNews(c *gin.Context) {
 	idStr := c.Param("id")
 	id, _ := strconv.Atoi(idStr)

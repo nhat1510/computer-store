@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+
 func SearchProductsHandler(c *gin.Context) {
 	keyword := c.Query("q")
 	if keyword == "" {

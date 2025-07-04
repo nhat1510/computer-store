@@ -7,7 +7,14 @@ import (
 	"time"
 )
 
-// Lấy thông tin tài khoản hiện tại
+// @Summary Lấy thông tin tài khoản
+// @Description Lấy thông tin của người dùng đang đăng nhập
+// @Tags Profile
+// @Produce json
+// @Success 200 {object} models.User
+// @Failure 404 {object} map[string]string
+// @Router /profile [get]
+// @Security BearerAuth
 func GetProfile(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -20,11 +27,20 @@ func GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// Cập nhật thông tin tài khoản (KHÔNG avatar)
+// @Summary Cập nhật thông tin tài khoản
+// @Description Cập nhật thông tin tài khoản người dùng (không bao gồm avatar)
+// @Tags Profile
+// @Accept json
+// @Produce json
+// @Param input body object true "Thông tin người dùng"
+// @Success 200 {object} models.User
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /profile [put]
+// @Security BearerAuth
 func UpdateProfile(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
-	// BIND THÀNH CHUỖI TRƯỚC
 	var input struct {
 		Name     string `json:"name"`
 		Phone    string `json:"phone"`
@@ -76,7 +92,14 @@ func UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// Xóa tài khoản
+// @Summary Xoá tài khoản người dùng
+// @Description Xoá tài khoản hiện tại và toàn bộ dữ liệu liên quan
+// @Tags Profile
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /profile [delete]
+// @Security BearerAuth
 func DeleteProfile(c *gin.Context) {
 	userID := c.GetUint("user_id")
 

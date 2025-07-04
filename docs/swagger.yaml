@@ -1,0 +1,1461 @@
+basePath: /
+definitions:
+  models.Category:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        description: ❗ tự khai báo thay vì gorm.DeletedAt
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Laptop
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.CategoryResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+      image:
+        example: phone.jpg
+        type: string
+      name:
+        example: Điện thoại
+        type: string
+    type: object
+  models.News:
+    properties:
+      author:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      highlight:
+        description: ✅ cần có
+        type: string
+      id:
+        type: integer
+      image:
+        description: ảnh đại diện
+        type: string
+      tags:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      items:
+        description: ➕ Danh sách sản phẩm trong đơn hàng
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      status:
+        example: Đang xử lý
+        type: string
+      total:
+        example: 1500000
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        example: 2
+        type: integer
+    type: object
+  models.OrderItem:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      order_id:
+        example: 10
+        type: integer
+      price:
+        example: 750000
+        type: number
+      product_id:
+        example: 5
+        type: integer
+      product_image:
+        description: ➕ Trả riêng tên & ảnh sản phẩm
+        example: laptop.jpg
+        type: string
+      product_name:
+        example: Laptop Acer Gaming
+        type: string
+      quantity:
+        example: 2
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Product:
+    properties:
+      category:
+        allOf:
+        - $ref: '#/definitions/models.Category'
+        description: sẽ dùng struct sửa như trên
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      id:
+        example: 1
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Review:
+    properties:
+      comment:
+        example: Sản phẩm rất tốt
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      product_id:
+        example: 101
+        type: integer
+      rating:
+        example: 4
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        example: 5
+        type: integer
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      avatar:
+        type: string
+      bio:
+        type: string
+      city:
+        type: string
+      created_at:
+        type: string
+      district:
+        type: string
+      dob:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      job:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      ward:
+        type: string
+    type: object
+  services.AddToCartInput:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  services.CreateOrderInput:
+    properties:
+      items:
+        items:
+          properties:
+            product_id:
+              type: integer
+            quantity:
+              type: integer
+          type: object
+        type: array
+    type: object
+  services.DashboardData:
+    properties:
+      top_products:
+        items:
+          $ref: '#/definitions/services.TopProductEntry'
+        type: array
+      total_orders:
+        type: integer
+      total_revenue:
+        type: number
+      total_users:
+        type: integer
+    type: object
+  services.TopProductEntry:
+    properties:
+      name:
+        type: string
+      product_id:
+        type: integer
+      total_sold:
+        type: integer
+    type: object
+  services.UpdateCartInput:
+    properties:
+      quantity:
+        type: integer
+    type: object
+  types.ChangePasswordInput:
+    properties:
+      new_password:
+        minLength: 6
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  types.ForgotPasswordInput:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  types.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  types.RegisterInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  types.ResetPasswordInput:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      new_password:
+        minLength: 6
+        type: string
+    required:
+    - code
+    - email
+    - new_password
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: you@example.com
+    name: Developer
+  description: API cho hệ thống bán hàng máy tính
+  license:
+    name: MIT
+  termsOfService: http://localhost:8080/
+  title: Computer Store API
+  version: "1.0"
+paths:
+  /admin/dashboard:
+    get:
+      description: Trả về thống kê tổng quan hệ thống như tổng đơn hàng, doanh thu,
+        số lượng người dùng, v.v.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.DashboardData'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy dữ liệu dashboard admin
+      tags:
+      - Admin
+  /cart:
+    get:
+      description: Lấy danh sách sản phẩm trong giỏ hàng của người dùng hiện tại
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy giỏ hàng của người dùng
+      tags:
+      - Cart
+    post:
+      consumes:
+      - application/json
+      description: Người dùng thêm một sản phẩm vào giỏ hàng của họ
+      parameters:
+      - description: Dữ liệu sản phẩm cần thêm
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/services.AddToCartInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Thêm sản phẩm vào giỏ hàng
+      tags:
+      - Cart
+  /cart/{product_id}:
+    delete:
+      description: Xóa một sản phẩm ra khỏi giỏ hàng của người dùng
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Xóa sản phẩm khỏi giỏ hàng
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/json
+      description: Cập nhật số lượng của một sản phẩm trong giỏ hàng theo product_id
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      - description: Số lượng mới
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateCartInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cập nhật số lượng sản phẩm trong giỏ hàng
+      tags:
+      - Cart
+  /categories:
+    get:
+      description: Trả về danh sách tất cả danh mục hiện có
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CategoryResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lấy tất cả danh mục
+      tags:
+      - Categories
+    post:
+      consumes:
+      - multipart/form-data
+      description: Tạo mới danh mục với tên và ảnh đại diện
+      parameters:
+      - description: Tên danh mục
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Ảnh đại diện danh mục
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CategoryResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo danh mục mới
+      tags:
+      - Categories
+  /categories/{id}:
+    delete:
+      description: Xoá danh mục theo ID
+      parameters:
+      - description: ID danh mục
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Xoá danh mục
+      tags:
+      - Categories
+    put:
+      consumes:
+      - multipart/form-data
+      description: Cập nhật thông tin danh mục theo ID, có thể đổi tên và/hoặc ảnh
+      parameters:
+      - description: ID danh mục
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Tên mới
+        in: formData
+        name: name
+        type: string
+      - description: Ảnh mới (tuỳ chọn)
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CategoryResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cập nhật danh mục
+      tags:
+      - Categories
+  /change-password:
+    post:
+      consumes:
+      - application/json
+      description: Người dùng đổi mật khẩu khi đã đăng nhập
+      parameters:
+      - description: Mật khẩu cũ và mới
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/types.ChangePasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Đổi mật khẩu
+      tags:
+      - Auth
+  /delete-account:
+    delete:
+      description: Xóa tài khoản người dùng hiện tại
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Xóa tài khoản
+      tags:
+      - Auth
+  /forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Gửi mã khôi phục đến email
+      parameters:
+      - description: Email người dùng
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/types.ForgotPasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Quên mật khẩu
+      tags:
+      - Auth
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Đăng nhập và nhận JWT token
+      parameters:
+      - description: Thông tin đăng nhập
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/types.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Đăng nhập
+      tags:
+      - Auth
+  /news:
+    get:
+      description: Trả về danh sách toàn bộ tin tức
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.News'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lấy danh sách tất cả tin tức
+      tags:
+      - News
+    post:
+      consumes:
+      - multipart/form-data
+      description: Tạo một tin tức mới từ form-data (bao gồm ảnh, tiêu đề, nội dung...)
+      parameters:
+      - description: Tiêu đề
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Nội dung
+        in: formData
+        name: content
+        required: true
+        type: string
+      - description: Nội dung nổi bật
+        in: formData
+        name: highlight
+        type: string
+      - description: Tags (ngăn cách bằng dấu phẩy)
+        in: formData
+        name: tags
+        type: string
+      - description: Ảnh đại diện
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.News'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo tin tức mới
+      tags:
+      - News
+  /news/{id}:
+    delete:
+      description: Xóa tin tức theo ID
+      parameters:
+      - description: ID tin tức
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Xóa tin tức
+      tags:
+      - News
+    get:
+      description: Trả về chi tiết tin tức theo ID
+      parameters:
+      - description: ID tin tức
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.News'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lấy chi tiết tin tức theo ID
+      tags:
+      - News
+    put:
+      consumes:
+      - multipart/form-data
+      description: Cập nhật tin tức theo ID (form-data)
+      parameters:
+      - description: ID tin tức
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Tiêu đề
+        in: formData
+        name: title
+        type: string
+      - description: Nội dung
+        in: formData
+        name: content
+        type: string
+      - description: Nội dung nổi bật
+        in: formData
+        name: highlight
+        type: string
+      - description: Tags
+        in: formData
+        name: tags
+        type: string
+      - description: Ảnh mới
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.News'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cập nhật tin tức
+      tags:
+      - News
+  /orders:
+    get:
+      description: Trả về toàn bộ đơn hàng trong hệ thống (chỉ dành cho admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy tất cả đơn hàng
+      tags:
+      - Orders
+  /orders/from-cart:
+    post:
+      description: Tạo đơn hàng dựa trên các sản phẩm trong giỏ hàng
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo đơn hàng từ giỏ hàng
+      tags:
+      - Orders
+  /orders/manual:
+    post:
+      consumes:
+      - application/json
+      description: Người dùng tạo đơn hàng với thông tin tùy chỉnh (không qua giỏ
+        hàng)
+      parameters:
+      - description: Thông tin đơn hàng
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/services.CreateOrderInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo đơn hàng thủ công
+      tags:
+      - Orders
+  /orders/user:
+    get:
+      description: Trả về danh sách đơn hàng của người dùng đã đăng nhập
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy đơn hàng của người dùng hiện tại
+      tags:
+      - Orders
+  /products:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Danh sách sản phẩm
+      tags:
+      - Products
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Tên sản phẩm
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Mô tả
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Giá
+        in: formData
+        name: price
+        required: true
+        type: number
+      - description: Số lượng
+        in: formData
+        name: stock
+        required: true
+        type: integer
+      - description: ID danh mục
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      - description: Ảnh sản phẩm
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Tạo sản phẩm
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Xoá sản phẩm
+      tags:
+      - Products
+    get:
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Xem chi tiết sản phẩm
+      tags:
+      - Products
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Tên sản phẩm
+        in: formData
+        name: name
+        type: string
+      - description: Mô tả
+        in: formData
+        name: description
+        type: string
+      - description: Giá
+        in: formData
+        name: price
+        type: number
+      - description: Số lượng
+        in: formData
+        name: stock
+        type: integer
+      - description: ID danh mục
+        in: formData
+        name: category_id
+        type: integer
+      - description: Ảnh mới (nếu có)
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Cập nhật sản phẩm
+      tags:
+      - Products
+  /profile:
+    delete:
+      description: Xoá tài khoản hiện tại và toàn bộ dữ liệu liên quan
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Xoá tài khoản người dùng
+      tags:
+      - Profile
+    get:
+      description: Lấy thông tin của người dùng đang đăng nhập
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy thông tin tài khoản
+      tags:
+      - Profile
+    put:
+      consumes:
+      - application/json
+      description: Cập nhật thông tin tài khoản người dùng (không bao gồm avatar)
+      parameters:
+      - description: Thông tin người dùng
+        in: body
+        name: input
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cập nhật thông tin tài khoản
+      tags:
+      - Profile
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Đăng ký người dùng mới
+      parameters:
+      - description: Thông tin đăng ký
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/types.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Đăng ký tài khoản
+      tags:
+      - Auth
+  /reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Đặt lại mật khẩu bằng mã khôi phục
+      parameters:
+      - description: Email, mã code và mật khẩu mới
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/types.ResetPasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Đặt lại mật khẩu
+      tags:
+      - Auth
+  /reviews:
+    post:
+      consumes:
+      - application/json
+      description: Người dùng tạo đánh giá cho một sản phẩm
+      parameters:
+      - description: Thông tin đánh giá
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Review'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Review'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo đánh giá mới
+      tags:
+      - Reviews
+  /reviews/{id}:
+    delete:
+      description: Xoá một đánh giá theo ID
+      parameters:
+      - description: ID đánh giá
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Xoá đánh giá
+      tags:
+      - Reviews
+    put:
+      consumes:
+      - application/json
+      description: Cập nhật nội dung hoặc điểm đánh giá theo ID
+      parameters:
+      - description: ID đánh giá
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Thông tin đánh giá cập nhật
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cập nhật đánh giá
+      tags:
+      - Reviews
+  /reviews/product/{product_id}:
+    get:
+      description: Trả về danh sách đánh giá của một sản phẩm cụ thể (bao gồm thông
+        tin người dùng)
+      parameters:
+      - description: ID sản phẩm
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Review'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lấy đánh giá theo sản phẩm
+      tags:
+      - Reviews
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

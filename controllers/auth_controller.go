@@ -7,7 +7,16 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-
+// @Summary Đăng ký tài khoản
+// @Description Đăng ký người dùng mới
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body types.RegisterInput true "Thông tin đăng ký"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /register [post]
 func Register(c *gin.Context) {
     var input types.RegisterInput
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -24,6 +33,16 @@ func Register(c *gin.Context) {
 }
 
 
+// @Summary Đăng nhập
+// @Description Đăng nhập và nhận JWT token
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body types.LoginInput true "Thông tin đăng nhập"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Router /login [post]
 func Login(c *gin.Context) {
     var input types.LoginInput
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -48,7 +67,16 @@ func Login(c *gin.Context) {
     })
 }
 
-
+// @Summary Quên mật khẩu
+// @Description Gửi mã khôi phục đến email
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body types.ForgotPasswordInput true "Email người dùng"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /forgot-password [post]
 func ForgotPassword(c *gin.Context) {
     var input types.ForgotPasswordInput
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -64,7 +92,15 @@ func ForgotPassword(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"message": "Mã khôi phục đã được gửi đến email"})
 }
 
-
+// @Summary Đặt lại mật khẩu
+// @Description Đặt lại mật khẩu bằng mã khôi phục
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body types.ResetPasswordInput true "Email, mã code và mật khẩu mới"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /reset-password [post]
 func ResetPassword(c *gin.Context) {
     var input types.ResetPasswordInput
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -80,7 +116,16 @@ func ResetPassword(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"message": "Mật khẩu đã được đặt lại thành công"})
 }
 
-
+// @Summary Đổi mật khẩu
+// @Description Người dùng đổi mật khẩu khi đã đăng nhập
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body types.ChangePasswordInput true "Mật khẩu cũ và mới"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Router /change-password [post]
 func ChangePassword(c *gin.Context) {
     var input types.ChangePasswordInput
     if err := c.ShouldBindJSON(&input); err != nil {
@@ -108,6 +153,14 @@ func ChangePassword(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"message": "Đổi mật khẩu thành công"})
 }
 
+// @Summary Xóa tài khoản
+// @Description Xóa tài khoản người dùng hiện tại
+// @Tags Auth
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /delete-account [delete]
 func DeleteAccount(c *gin.Context) {
     userIDVal, exists := c.Get("user_id")
     if !exists {
