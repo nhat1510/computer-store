@@ -37,6 +37,7 @@
 ---
 
 ##  Hướng dẫn chạy dự án
+- go mod tidy
 - go run main.go
 - air
 
@@ -46,4 +47,18 @@
 
 ### 2. Cấu hình `.env`
 Tạo file `.env` (nếu chưa có) 
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_NAME=computer_store
+DB_PORT=5432
+
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_email_password
+
+JWT_SECRET=mysecretkey
+
+Tạo thư mục upload/ (nếu muốn đăng ảnh)
 
